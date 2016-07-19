@@ -15,14 +15,14 @@
             <nav id="menu">
                 <input type="text" id="search-bar" placeholder="Filter by Name"></input>
                 <button id="search-button">Filter</button>
+                <ul data-bind="foreach: locationsList">
+                    <li databind="text: title"></li>
+                </ul>
             </nav>
             <main id="map-view">
             </main>
         </div>
-        <script>
-      /*
-       * Open the drawer when the menu ison is clicked.
-       */
+    <script>
       var menu = document.querySelector('.menu-button');
       var main = document.querySelector('main');
       var drawer = document.querySelector('nav');
@@ -34,9 +34,8 @@
       main.addEventListener('click', function() {
         drawer.classList.remove('open');
       });
-
     </script>
-        <script>
+    <script>
               var map;
               var markers = [];
               function initMap() {
@@ -101,5 +100,6 @@
         </script>
         <script src="js/jQuery.js"></script>
         <script src="js/knockout-3.4.0.js"></script>
+        <script async defer src="js/app.js"></script>
     </body>
 </html>
