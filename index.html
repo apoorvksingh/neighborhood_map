@@ -15,7 +15,7 @@
         <div class="container">
             <nav id="menu">
                 <input type="text" id="search-bar" placeholder="Filter by Name"></input>
-                <button id="search-button">Filter</button>
+                <button id="search-button" data-bind="click: filter">Filter</button>
                 <ul data-bind="foreach: locList">
                     <li data-bind="text: title"></li>
                 </ul>
@@ -81,6 +81,9 @@
                     // Extend the boundaries of the map for each marker
                     map.fitBounds(bounds);
                   }
+        </script>
+        <script>
+
         </script>
         <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4v6OZlaraUrCJgOO1QtQlyVAbd7nui4A&v=3&callback=initMap">

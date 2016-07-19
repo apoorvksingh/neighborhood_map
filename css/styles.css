@@ -54,6 +54,7 @@ h1 {
 ul {
     padding: 0px;
     margin-left: 20px;
+    text-transform: uppercase;
 }
 li {
     list-style: none;
