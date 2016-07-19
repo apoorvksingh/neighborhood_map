@@ -1,0 +1,106 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html, body, .container {
+    height: 100%;
+    width: 100%;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: blue;
+    text-align: center;
+    padding: 10px;
+}
+nav, main {
+    padding: 1em;
+    box-sizing: border-box;
+}
+.menu-button {
+    background-color: blue;
+    border: none;
+    color: #fff;
+    float: left;
+    font-size: 24px;
+    padding: 0px;
+    height: 1em;
+}
+h1 {
+    margin: 0px;
+    margin-left: 20px;
+    color: white;
+}
+#search-bar {
+    height: 3em;
+    width: 60%;
+    margin-top: 16px;
+    margin-left: 8%;
+}
+#search-button {
+    height: 3em;
+    width: 20%;
+    min-width: 40px;
+    margin-top: 16px;
+    margin-right: 8%;
+    border: 2px solid gray;
+    padding: 1px;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+main {
+    width: 100%;
+    height: 100%;
+}
+nav {
+    width: 300px;
+    height: 100%;
+    background-color: #bbb;
+    position: absolute;
+    /* This trasform moves the drawer off canvas. */
+    -webkit-transform: translate(-350px, 0);
+    transform: translate(-350px, 0);
+    /* Optionally, we animate the drawer. */
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
+nav.open {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+@media screen and (min-width: 600px) {
+    nav {
+        width: 40%;
+        position: relative;
+        -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+    }
+    main {
+        width: 60%;
+    }
+    .menu-button {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    nav {
+        width: 30%;
+        position: relative;
+        -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+    }
+    main {
+        width: 70%;
+    }
+    .menu-button {
+        display: none;
+    }
+}
