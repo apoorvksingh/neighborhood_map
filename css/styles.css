@@ -39,7 +39,8 @@ h1 {
     height: 3em;
     width: 60%;
     margin-top: 16px;
-    margin-left: 8%;
+    margin-left: 20px;
+    padding: 0px;
 }
 #search-button {
     height: 3em;
@@ -49,6 +50,14 @@ h1 {
     margin-right: 8%;
     border: 2px solid gray;
     padding: 1px;
+}
+ul {
+    padding: 0px;
+    margin-left: 20px;
+}
+li {
+    list-style: none;
+    line-height: 2em;
 }
 .container {
     display: flex;
