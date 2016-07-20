@@ -18,39 +18,32 @@ function initMap() {
     zoom: 19,
   });
   largeInfowindow = new google.maps.InfoWindow();
-  //var bounds = new google.maps.LatLngBounds();
   // Create an onclick event to open an infowindow at each marker.
-  /*
-  marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
-    });
-    bounds.extend(markers[i].position);
-  }
-  function populateInfoWindow(marker, infowindow) {
+  ko.applyBindings(new ViewModel());
+}
+function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
+      infowindow.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
       infowindow.setContent('<div>' + marker.title + '</div>');
       infowindow.open(map, marker);
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function() {
+        infowindow.marker.setIcon('https://www.google.com/mapfiles/marker.png');
         infowindow.marker = null;
       });
     }
   }
-  */
-  ko.applyBindings(new ViewModel());
-}
 var Location = function(data) {
     this.title = ko.observable(data.title);
     this.position = data.position;
     this.marker = "";
 };
-
 var ViewModel = function() {
     var self = this;
     this.locations = ko.observableArray();
-    this.keyword = '';
+    self.keyword = ko.observable('');
     locationList.forEach(function(location, i) {
       var newLocation = new Location(location);
       newLocation.marker = new google.maps.Marker({
@@ -60,50 +53,30 @@ var ViewModel = function() {
                         animation: google.maps.Animation.DROP,
                         id: i
                       });
+      newLocation.marker.addListener('click', function() {
+        populateInfoWindow(this, largeInfowindow);
+      });
       self.locations.push(newLocation);
       newLocation.marker.setMap(map);
     });
-    if(this.keyword !== '') {
-      var filter = ko.computed(function(){
-        if(self.locations().length > 0) {
-            self.locations().forEach(function(location){
-            var newLocation = location;
-            newLocation.marker.setVisible(false);
-            });
-            self.locations.removeAll();
-            console.log(self.locations());
-            //var keyword = document.getElementById("search-bar").value;
-            locationList.forEach(function(locationItem, i){
-              if (locationItem.title.toUpperCase().includes(self.keyword.toUpperCase())) {
-                  self.locations.push(new Location(locationItem));
-                  var marker = new google.maps.Marker({
-                                    map: map,
-                                    position: locationItem.position,
-                                    title: locationItem.title.toString(),
-                                    animation: google.maps.Animation.DROP,
-                                    id: i
-                                  });
-                  location.marker = marker;
-              }
-            });
-            self.locations().length = 0;
-        }
-        else {
-            locationList.forEach(function(location, i) {
-              var newLocation = new Location(location);
-              newLocation.marker = new google.maps.Marker({
-                                map: map,
-                                position: location.position,
-                                title: location.title.toString(),
-                                animation: google.maps.Animation.DROP,
-                                id: i
-                              });
-              self.locations.push(newLocation);
-              newLocation.marker.setMap(map);
-            });
-        }
-      }, this);
-    }
+    var filter = ko.computed(function(){
+      console.log(self.locations());
+      if(self.keyword() != '') {
+        self.locations().forEach(function(location){
+          if (!location.marker.title.toUpperCase().includes(self.keyword().toUpperCase())) {
+              location.marker.setVisible(false);
+          }
+          else {
+              location.marker.setVisible(true);
+          }
+        });
+      }
+      else {
+          self.locations().forEach(function(location){
+              location.marker.setVisible(true);
+          });
+      }
+    }, this);
 }
 
 //cc78361027869dd4bd7d23945a095e97
