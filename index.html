@@ -10,13 +10,13 @@
     <body>
         <header>
             <button class="menu-button">&#9776;</button>
-            <h1>Neighborhood Map</h1>
+            <h1>DLF Cyber Hub</h1>
         </header>
         <div class="container">
             <nav id="menu">
-                <input type="text" id="search-bar" placeholder="Filter by Name"></input>
-                <button id="search-button">Filter</button>
-                <ul data-bind="foreach: locList">
+                <input type="text" id="search-bar" placeholder="Filter by Name" data-bind="textInput: keyword">
+                </input>
+                <ul data-bind="foreach: locations">
                     <li data-bind="text: title"></li>
                 </ul>
             </nav>
@@ -24,6 +24,7 @@
             </main>
         </div>
         <script>
+        //Adding functionality for the hamburger menu in mobile devices
           var menu = document.querySelector('.menu-button');
           var main = document.querySelector('main');
           var drawer = document.querySelector('nav');
@@ -36,56 +37,11 @@
             drawer.classList.remove('open');
           });
         </script>
-        <script>
-                  var map;
-                  var markers = [];
-                  function initMap() {
-                    // Constructor creates a new map - only center and zoom are required.
-                    map = new google.maps.Map(document.getElementById('map-view'), {
-                      center: {lat: 28.495517, lng: 77.088744},
-                      zoom: 19,
-                    });
-                    var locations = [
-                      {title: 'Dhaba By Claridges', location: {lat: 28.495699, lng: 77.089238}},
-                      {title: 'Starbucks', location: {lat: 28.495645, lng: 77.088760}},
-                      {title: 'Imperfecto', location: {lat: 28.495928, lng: 77.088659}},
-                      {title: 'The Wine Company', location: {lat: 28.496215, lng: 77.088862}},
-                      {title: 'The Beer Cafe', location: {lat: 28.495522, lng: 77.089080}},
-                      {title: 'Soi 7', location: {lat: 28.495843, lng: 77.088562}}
-                    ];
 
-                    var largeInfowindow = new google.maps.InfoWindow();
-                    var bounds = new google.maps.LatLngBounds();
-
-                    // The following group uses the location array to create an array of markers on initialize.
-                    for (var i = 0; i < locations.length; i++) {
-                    // Get the position from the location array.
-                      var position = locations[i].location;
-                      var title = locations[i].title;
-                      // Create a marker per location, and put into markers array.
-                      var marker = new google.maps.Marker({
-                        map: map,
-                        position: position,
-                        title: title,
-                        animation: google.maps.Animation.DROP,
-                        id: i
-                      });
-                      // Push the marker to our array of markers.
-                      markers.push(marker);
-                      // Create an onclick event to open an infowindow at each marker.
-                      marker.addListener('click', function() {
-                        populateInfoWindow(this, largeInfowindow);
-                      });
-                      bounds.extend(markers[i].position);
-                    }
-                    // Extend the boundaries of the map for each marker
-                    map.fitBounds(bounds);
-                  }
-        </script>
+        <script src="js/knockout-3.4.0.js"></script>
+        <script async defer src="js/app.js"></script>
         <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4v6OZlaraUrCJgOO1QtQlyVAbd7nui4A&v=3&callback=initMap">
         </script>
-        <script src="js/knockout-3.4.0.js"></script>
-        <script src="js/app.js"></script>
     </body>
 </html>

@@ -37,23 +37,15 @@ h1 {
 }
 #search-bar {
     height: 3em;
-    width: 60%;
+    width: 80%;
     margin-top: 16px;
     margin-left: 20px;
     padding: 0px;
-}
-#search-button {
-    height: 3em;
-    width: 20%;
-    min-width: 40px;
-    margin-top: 16px;
-    margin-right: 8%;
-    border: 2px solid gray;
-    padding: 1px;
 }
 ul {
     padding: 0px;
     margin-left: 20px;
+    text-transform: uppercase;
 }
 li {
     list-style: none;
