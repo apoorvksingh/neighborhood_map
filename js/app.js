@@ -1,3 +1,5 @@
+'use strict';
+//Creating the list of locations to be displayed on the map
 var locationList = [
                       {title: 'Dhaba By Claridges', position: {lat: 28.495699, lng: 77.089238}},
                       {title: 'Starbucks', position: {lat: 28.495645, lng: 77.088760}},
@@ -14,7 +16,7 @@ var locationList = [
 var map;
 var markers = [];
 var largeInfowindow;
-
+//Initializing the map to be displayed on the site
 function initMap() {
   var self =this;
   // Constructor creates a new map - only center and zoom are required.
@@ -31,7 +33,6 @@ function initMap() {
     ]
   });
   largeInfowindow = new google.maps.InfoWindow();
-  // Create an onclick event to open an infowindow at each marker.
   ko.applyBindings(new ViewModel());
 }
 
@@ -40,30 +41,32 @@ function populateInfoWindow(marker, infowindow) {
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
       infowindow.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
-      /*
-      var wikiText = "";
-      var wikiURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search="+ marker.title + "&format=json&callback=wikiCallBack";
-      var wikiTimeout = setTimeout(function() {
-        $('#wikipedia-header').text('Failed to get Wiki Links');
-      }, 2000);
+      //The infowindow gets data from foursquare for each marker and displays it
+      var foursquareURL = "https://api.foursquare.com/v2/venues/search?query="+ marker.title +"&ll=" +marker.position.lat()+ "," +marker.position.lng()+ "&oauth_token=UTED5VEK0E1IPANN51ZEERAXB1ZI1P1URFRRFXZ3J3YKKWFP&v=20160720";
+      console.log(foursquareURL);
+      var text = "";
+      var fourSqTimeout = setTimeout(function() {
+        window.alert("Error! Failed to get data");
+      }, 5000);
       $.ajax({
-        url: wikiURL,
+        url: foursquareURL,
         dataType:"jsonp",
         success: function(data){
-          var wikiList = data[1];
-
-          for( var index = 0; index < wikiList.length; index++) {
-              var article = "<li class=\"article\"><a href=\"" + data[3][index] + "\">" + data[1][index] + "</a></li>";
-              wikiText += article;
-          }
-          infowindow.setContent('<div><ul>' + wikiText + '</ul></div>');
-          clearTimeout(wikiTimeout);
+          var fourSqList = data.response.venues;
+          console.log(data);
+          var infowindowContent = '<div>';
+          infowindowContent += '<h3>' +fourSqList[0].name+ '</h3>';
+          infowindowContent += '<p>' +fourSqList[0].location.address+ '</p>';
+          infowindowContent += '<p> Checkins :' +fourSqList[0].stats.checkinsCount+ '</p><br />';
+          infowindowContent += '<h6>Data Provided by Foursquare</h6>';
+          infowindowContent += '</div>';
+          infowindow.setContent(infowindowContent);
+          clearTimeout(fourSqTimeout);
         }
       });
-      */
-      infowindow.setContent('<div>' + marker.title.toUpperCase() + '</div>');
+      //infowindow.setContent('<div>' + marker.title.toUpperCase() + '</div>');
       infowindow.open(map, marker);
-      // Make sure the marker property is cleared if the infowindow is closed.
+      // Making sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function() {
         infowindow.marker.setIcon('https://www.google.com/mapfiles/marker.png');
         infowindow.marker = null;
@@ -81,8 +84,10 @@ var ViewModel = function() {
     var self = this;
     this.locations = ko.observableArray();
     self.keyword = ko.observable('');
+    //creating an array of Location objects that contain markers for each location
     locationList.forEach(function(location, i) {
       var newLocation = new Location(location);
+      //Creating a new marker for each location
       newLocation.marker = new google.maps.Marker({
                         map: map,
                         position: location.position,
@@ -97,7 +102,9 @@ var ViewModel = function() {
       self.locations.push(newLocation);
       newLocation.marker.setMap(map);
     });
-    var filter = ko.computed(function(){
+    //The FILTER computed property takes the input as a string from the search box, checks if that
+    //string is contained in any of the location titles and displays only those locations
+    this.filter = ko.computed(function(){
       if(self.keyword() != '') {
         self.locations().forEach(function(location){
           if (!location.marker.title.toUpperCase().includes(self.keyword().toUpperCase())) {
