@@ -17,7 +17,7 @@
                 <input type="text" id="search-bar" placeholder="Filter by Name" data-bind="textInput: keyword">
                 </input>
                 <ul data-bind="foreach: locations">
-                    <li data-bind="text: title"></li>
+                    <li data-bind="text: title,visible: visibility"></li>
                 </ul>
             </nav>
             <main id="map-view">
