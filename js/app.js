@@ -33,6 +33,9 @@ function initMap() {
       }
     ]
   });
+  map.onerror=function(){
+    window.alert("Sorry! Unable to load map. Please try again later.");
+  };
   largeInfowindow = new google.maps.InfoWindow();
   ko.applyBindings(new ViewModel());
 }
@@ -86,11 +89,6 @@ var ViewModel = function() {
     this.locations = ko.observableArray();
     self.keyword = ko.observable('');
 
-    self.showInfo = function() {
-      /*self.locations().forEach(function(location, i) {
-          populateInfoWindow(location.marker, largeInfowindow);
-      });*/
-    }
     //creating an array of Location objects that contain markers for each location
     locationList.forEach(function(location, i) {
       var newLocation = new Location(location);
@@ -112,7 +110,12 @@ var ViewModel = function() {
       self.locations.push(newLocation);
       newLocation.marker.setMap(map);
     });
-
+    this.showInfo = function() {
+        for (var i = 0; i < self.locations().length; i++) {
+                self.locations()[i].marker.setIcon('https://www.google.com/mapfiles/marker.png');
+        }
+        populateInfoWindow(this.marker, largeInfowindow);
+    }
     //The FILTER computed property takes the input as a string from the search box, checks if that
     //string is contained in any of the location titles and displays only those locations
     this.filter = ko.computed(function(){
@@ -120,19 +123,19 @@ var ViewModel = function() {
         self.locations().forEach(function(location){
           if (!location.marker.title.toUpperCase().includes(self.keyword().toUpperCase())) {
               location.marker.setVisible(false);
-              location.visibility = false;
+              location.visibility(false);
           }
           else {
               location.marker.setVisible(true);
-              location.visibility = true;
+              location.visibility(true);
           }
-          console.log(location.visibility);
+          console.log(location.visibility());
         });
       }
       else {
           self.locations().forEach(function(location){
               location.marker.setVisible(true);
-              location.visibility = true;
+              location.visibility(true);
           });
       }
 

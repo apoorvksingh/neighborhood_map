@@ -51,6 +51,9 @@ li {
     list-style: none;
     line-height: 2em;
 }
+li:hover {
+    cursor: pointer;
+}
 .container {
     display: flex;
     flex-wrap: wrap;

@@ -17,7 +17,7 @@
                 <input type="text" id="search-bar" placeholder="Filter by Name" data-bind="textInput: keyword">
                 </input>
                 <ul data-bind="foreach: locations">
-                    <li data-bind="text: title,visible: visibility"></li>
+                    <li data-bind="visible: visibility, text: title, click: $parent.showInfo"></li>
                 </ul>
             </nav>
             <main id="map-view">
@@ -41,7 +41,7 @@
         <script src="js/knockout-3.4.0.js"></script>
         <script async defer src="js/app.js"></script>
         <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4v6OZlaraUrCJgOO1QtQlyVAbd7nui4A&v=3&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4v6OZlaraUrCJgOO1QtQlyVAbd7nui4A&v=3&callback=initMap" onerror="window.alert('Sorry. We are unable to load the map. Please try again later')">
         </script>
     </body>
 </html>
